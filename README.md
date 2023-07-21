@@ -1,2 +1,2 @@
-# Mock CI/CD Pipeline s23
+# Mock CI/CD Pipeline s
 
