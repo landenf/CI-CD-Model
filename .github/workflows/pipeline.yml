@@ -19,24 +19,29 @@ jobs:
         run: javac -cp . tests.java && java -cp . org.junit.runner.JUnitCore Tests
         continue-on-error: true
 
-      # Step 3: Code Review
+       # Step 3: Code Review
       - name: Code Review
+        id: code_review
         run: |
-            if [ ${{ job.status }} == 'success' ]; then
-              # Add steps here to request code review and wait for approval
-              echo "Unit tests passed. Requesting code review."
-              PR_NUMBER=${{ github.event.pull_request.number }}
-              curl -s -X POST -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -d '{"reviewers": ["landenf"], "team_reviewers": [], "labels": [], "title": "Code Review Request", "body": "Please review the changes.", "event": "REQUEST_REVIEW", "comments": ""}' "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER/reviews"
-
-              # Wait for the senior developer's approval
-              echo "Waiting for code review approval..."
+          if [ ${{ job.status }} == 'success' ]; then
+            # Add steps here to request code review and wait for approval
+            echo "Unit tests passed. Requesting code review."
+            PR_NUMBER=${{ github.event.pull_request.number }}
+            ASSIGN_TO="sr-dev-username"
+            curl -s -X POST -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -d "{\"assignees\": [\"$ASSIGN_TO\"], \"labels\": [], \"title\": \"Code Review Request\", \"body\": \"Please review the changes.\"}" "https://api.github.com/repos/${{ github.repository }}/issues/$PR_NUMBER"
+            
+            # Wait for the senior developer's comment
+            echo "Waiting for code review comments..."
+            while [[ -z $(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/issues/$PR_NUMBER/comments" | jq -r '.[] | select(.user.login == "sr-dev-username") | .body') ]]; do
               sleep 10
-              while [[ $(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER/reviews" | jq -r '.[] | select(.user.login == "landenf" and .state == "APPROVED") | .state') != "APPROVED" ]]; do
-                echo "Still waiting for approval..."
-                sleep 10
-              done
-              echo "Code review approved!"
-            else
-              echo "Unit tests failed. Terminating the workflow."
-              exit 1
-            fi
+            done
+            echo "Code review comment received!"
+          else
+            echo "Unit tests failed. Terminating the workflow."
+            exit 1
+          fi
+
+      # Step 4: Unlock the branch
+      - name: Unlock Branch
+        if: steps.code_review.outputs.exit_code == 0
+        run: git push origin --delete ${{ github.event.pull_request.head.ref }}
