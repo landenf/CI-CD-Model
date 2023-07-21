@@ -27,12 +27,12 @@ jobs:
               # Add steps here to request code review and wait for approval
               echo "Unit tests passed. Requesting code review."
               PR_NUMBER=${{ github.event.pull_request.number }}
-              curl -s -X POST -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -d '{"reviewers": ["sr-dev-username"], "team_reviewers": [], "labels": [], "title": "Code Review Request", "body": "Please review the changes.", "event": "REQUEST_REVIEW", "comments": ""}' "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER/reviews"
+              curl -s -X POST -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -d '{"reviewers": ["landenf"], "team_reviewers": [], "labels": [], "title": "Code Review Request", "body": "Please review the changes.", "event": "REQUEST_REVIEW", "comments": ""}' "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER/reviews"
 
               # Wait for the senior developer's approval
               echo "Waiting for code review approval..."
               sleep 10
-              while [[ $(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER/reviews" | jq -r '.[] | select(.user.login == "sr-dev-username" and .state == "APPROVED") | .state') != "APPROVED" ]]; do
+              while [[ $(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER/reviews" | jq -r '.[] | select(.user.login == "landenf" and .state == "APPROVED") | .state') != "APPROVED" ]]; do
                 echo "Still waiting for approval..."
                 sleep 10
               done
