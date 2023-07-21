@@ -24,12 +24,7 @@ jobs:
         id: code_review
         run: |
           if [ ${{ job.status }} == 'success' ]; then
-            # Add steps here to request code review and wait for approval
-            echo "Unit tests passed. Requesting code review."
-            PR_NUMBER=${{ github.event.pull_request.number }}
-            ASSIGN_TO="landenf"
-            curl -s -X POST -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -d "{\"assignees\": [\"$ASSIGN_TO\"], \"labels\": [], \"title\": \"Code Review Request\", \"body\": \"Please review the changes.\"}" "https://api.github.com/repos/${{ github.repository }}/issues/$PR_NUMBER"
-            
+   
             # Wait for the senior developer's comment
             echo "Waiting for code review comments..."
             while [[ -z $(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/issues/$PR_NUMBER/comments" | jq -r '.[] | select(.user.login == "landenf") | .body') ]]; do
