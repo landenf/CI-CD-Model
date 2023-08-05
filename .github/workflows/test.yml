@@ -1,0 +1,24 @@
+name: Auto Assign Pull Request
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set assignee
+        run: |
+          # Add the desired username who should be assigned to the pull request
+          assignee_username="your_username_here"
+          pr_number=$(jq -r .number "$GITHUB_EVENT_PATH")
+          response=$(curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -d "{\"assignees\":[\"$assignee_username\"]}" \
+            "https://api.github.com/repos/${{ github.repository }}/issues/$pr_number/assignees")
+          echo $response
