@@ -16,7 +16,7 @@ jobs:
       - name: Set assignee
         run: |
           # Add the desired username who should be assigned to the pull request
-          assignee_username="your_username_here"
+          assignee_username="landenf"
           pr_number=$(jq -r .number "$GITHUB_EVENT_PATH")
           response=$(curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -d "{\"assignees\":[\"$assignee_username\"]}" \
