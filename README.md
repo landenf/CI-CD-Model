@@ -1,7 +1,33 @@
 # Mock CI/CD Pipeline - Proof of Concept
 
 ### Project Outline: 
-This is a Continue Integration and Continuous Delivery pipeline built using AWS CodePipline and other AWS microservices. The CI/CD pipeline is a proof-of-concept project showcasing the possibility of seamlessly integrating DevOps practices into development teams. This serves to automate the software development lifecycle, encompassing developer implementation, code review (Git), code build, testing, and deployment, and final staging stakeholder approval.
+This project revolves around a Continuous Integration and Continuous Delivery pipeline built using AWS CodePipline and other AWS microservices. The CI/CD pipeline is a proof-of-concept project showcasing the possibility of seamlessly integrating DevOps practices into development teams. This serves to automate the software development lifecycle, encompassing developer implementation, code review (Git), code build, testing, and deployment, and final staging stakeholder approval.
+
+### Why? 
+AWS offers a surplus of configuration options for CI/CD through their CodePipline including complicated build, test, and deploy processes. This pipeline incorporates all of these features in addition to the manual approval process AWS offers. HOWEVER, the idea for not only demonstrating this process but also building a custom feature came about when wondering what about non-technical individuals in the process. Stakeholders, non-technical PMs, and other personnel involved in approving staging environments or new features deployed should be able to be involved in the automation process. This pipeline creates a workaround for this process by utilizing AWS microservices in addition to the pipeline.
+
+### Setup - Microservices Involved
+
+AWS Microservices Used
+- AWS Lambda
+    - Url Generator Funtion
+    - Url Validation Function
+- AWS DynamoDB
+    - Table entries hold outstanding request approval tokens.
+- AWS Code Pipeline
+- AWS Code Commit
+    - Configured to read from Git
+- AWS Code Build
+- AWS Code Deploy
+    - Staging and Live environments
+- AWS SNS 
+    - Approval Topic (FIFO)
+        - Pub: Lambda
+        - Sub: SES
+- AWS SES
+    - Configured to the Stakeholder email list
+Note: Repo clone is not necessary. 
+Copy Python scripts into lambda functions and configure microservices and permissions.
 
 ## Step 1 – Code Implementation and Review
 

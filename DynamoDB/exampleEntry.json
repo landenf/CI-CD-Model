@@ -1,0 +1,26 @@
+{
+    "message_id": {
+      "S": "a2de7e6b-eba4-5ef0-8461-2330fdf0e527"
+    },
+    "Accept_URL": {
+      "S": "SlRy-gfIlCD04L2Y5ScUkiJUnjMCgHJEQyNA-######"
+    },
+    "Pipeline_action": {
+      "S": "RequestApproval"
+    },
+    "Pipeline_name": {
+      "S": "MockCICDPipeline"
+    },
+    "Pipeline_stage": {
+      "S": "StakeHolders"
+    },
+    "Pipeline_token": {
+      "S": "ea2948d2-6d41-4818-ab79-############"
+    },
+    "Reject_URL": {
+      "S": "I5BhsPqK7PfvWbVi5IXsnca4fCQLPYmyMPlxV0CYLjM"
+    },
+    "timestamp": {
+      "S": "19/08/2023 19:12:22"
+    }
+  }
