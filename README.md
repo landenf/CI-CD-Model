@@ -71,19 +71,20 @@ Once all the pipeline steps are complete and the changes are approved by stakeho
      graph TD;
         Developer-->CodeReview;
         CodeReview-->DevelopmentBoundBrach;
-        DevelopmentBoundBrach-->CodeCommit(Pipeline);
-        CodeCommit(Pipeline)-->CodeBuild/Test;
+        DevelopmentBoundBrach-->CodeCommit-Pipeline;
+        CodeCommit-Pipeline-->CodeBuild/Test;
         CodeBuild/Test-->Fail;
-        CodeBuild/Test-->CodeDeploy(STG);
-        CodeDeploy(STG)-->SNS-Topic;
-        SNS-Topic-->Lambda(Url Generator);
-        Lambda(Url Generator)-->DynamoDB;
-        Lambda(Url Generator)-->SES(Email);
-        SES(Email)-->ApprovalUrl;
-        SES(Email)-->RejectUrl;
+        Fail-->Developer;
+        CodeBuild/Test-->CodeDeploy-STG;
+        CodeDeploy-STG-->SNS-Topic;
+        SNS-Topic-->Lambda-UrlGenerator;
+        Lambda-UrlGenerator-->DynamoDB;
+        Lambda-UrlGenerator-->SES-Email;
+        SES-Email-->ApprovalUrl;
+        SES-Email-->RejectUrl;
         ApprovalUrl-->PipelineApproval;
         RejectUrl-->Developer;
-        PipelineApproval -->Deploy(Prod);
+        PipelineApproval -->Deploy-Prod;
    ```
 
        
