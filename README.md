@@ -1,6 +1,6 @@
 # Mock CI/CD Pipeline - Proof of Concept
 
-Tables of contents: [Why](#why) | [Microservices](#setup--microservices-involved) | [Step 1](#Step-1-–-Code-Implementation-and-Review----(Walkthrough)) | [Step 2](#Step-2-–Build-and-Deploy-(Staging)) | [Step 3](#Step-3-–Stakeholder-Approval) | [Step 4](#Step-4-–Production-Deployment) | [Diagram](#syntax)
+Tables of contents: [Why](#why) | [Microservices](#setup---microservices-involved) | [Step 1](#step-1--code-implementation-and-review------walkthrough) | [Step 2](#step-2--build-and-deploy-staging) | [Step 3](#step-3--stakeholder-approval) | [Step 4](#step-4--production-deployment) | [Diagram](#diagram-of-project-architecture)
 
 ### Project Outline: 
 This project revolves around a Continuous Integration and Continuous Delivery pipeline built using AWS CodePipline and other AWS microservices. The CI/CD pipeline is a proof-of-concept project showcasing the possibility of seamlessly integrating DevOps practices into development teams. This serves to automate the software development lifecycle, encompassing developer implementation, code review (Git), code build, testing, and deployment, and final staging stakeholder approval.
@@ -32,18 +32,6 @@ AWS Microservices Used
 Note: Repo clone is not necessary. 
 Copy Python scripts into lambda functions and configure microservices and permissions.
 
-## Diagram of Project Architecture
-
-  - Flowchart
-
-   ```mermaid
-     graph TD;
-         A-->B;
-         A-->C;
-         B-->D;
-         C-->D;
-   ```
-
 ## Step 1 – Code Implementation and Review  --  (Walkthrough)
 
 ### Git
@@ -74,3 +62,26 @@ The stakeholder will receive an email (using verified SES addresses) including t
 ## Step 4 – Production Deployment
 
 Once all the pipeline steps are complete and the changes are approved by stakeholders this step grabs the same build artifacts from the last deployment and deploys them to the live servers for production. Various deployment strategies such as blue/green, canary, or linear can be configured based on requirements. If the build fails, or the approval is rejected the pipeline is halted until the change is fixed and re-checked into the source control. 
+
+## Diagram of Project Architecture
+
+  - AWS Region 
+
+   ```mermaid
+     graph TD;
+        Developer --> Code Review(QA);
+        Code Review(QA) --> Merge into DDB
+        Merge into DDB --> Code Commit (Pipeline)
+        Code Commit (Pipeline) --> Code Build/Test
+        Code Build/Test --> Fail
+        Code Build/Test --> Code Deploy(STG)
+        Code Deploy(STG) --> SNS Topic
+        SNS Topic --> Lambda (Url Generator)
+        Lambda (Url Generator) --> Dynamo DB
+        Lambda (Url Generator) --> SES (Email)
+        SES (Email) --> Approval Url
+        SES (Email) --> Reject Url
+        Approval Url --> Pipeline Approval
+        Reject Url --> Developer;
+        Pipeline Approval --> Deploy (Prod)
+   ```
