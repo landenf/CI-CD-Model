@@ -69,9 +69,13 @@ Once all the pipeline steps are complete and the changes are approved by stakeho
 
    ```mermaid
      graph TD;
-        Developer --> Code Review(QA);
-        Code Review(QA) --> Merge into DDB;
-        Merge into DDB --> Code Commit (Pipeline);
+        xx-->dd;
+        dd-->ss;
+   ```
+
+Developer-->CodeReview(QA);
+        CodeReview(QA)-->MergeintoDDB;
+        MergeintoDDB-->CodeCommit(Pipeline);
         Code Commit (Pipeline) --> Code Build/Test;
         Code Build/Test --> Fail;
         Code Build/Test --> Code Deploy(STG);
@@ -84,4 +88,3 @@ Once all the pipeline steps are complete and the changes are approved by stakeho
         Approval Url --> Pipeline Approval;
         Reject Url --> Developer;
         Pipeline Approval --> Deploy (Prod);
-   ```
