@@ -1,5 +1,7 @@
 # Mock CI/CD Pipeline - Proof of Concept
 
+Tables of contents: [Why](#why) | [Microservices](#setup--microservices-involved) | [Step 1](#Step-1-–-Code-Implementation-and-Review----(Walkthrough)) | [Step 2](#Step-2-–Build-and-Deploy-(Staging)) | [Step 3](#Step-3-–Stakeholder-Approval) | [Step 4](#Step-4-–Production-Deployment) | [Diagram](#syntax)
+
 ### Project Outline: 
 This project revolves around a Continuous Integration and Continuous Delivery pipeline built using AWS CodePipline and other AWS microservices. The CI/CD pipeline is a proof-of-concept project showcasing the possibility of seamlessly integrating DevOps practices into development teams. This serves to automate the software development lifecycle, encompassing developer implementation, code review (Git), code build, testing, and deployment, and final staging stakeholder approval.
 
@@ -33,7 +35,7 @@ Copy Python scripts into lambda functions and configure microservices and permis
 ## Diagram of Project Architecture
 
   - Flowchart
-  
+
    ```mermaid
      graph TD;
          A-->B;
