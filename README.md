@@ -26,10 +26,23 @@ AWS Microservices Used
         - Sub: SES
 - AWS SES
     - Configured to the Stakeholder email list
+
 Note: Repo clone is not necessary. 
 Copy Python scripts into lambda functions and configure microservices and permissions.
 
-## Step 1 – Code Implementation and Review
+## Diagram of Project Architecture
+
+  - Flowchart
+  
+   ```mermaid
+     graph TD;
+         A-->B;
+         A-->C;
+         B-->D;
+         C-->D;
+   ```
+
+## Step 1 – Code Implementation and Review  --  (Walkthrough)
 
 ### Git
 In this phase, a developer codes for a designated task and initiates a pull request. A peer or senior developer reviews and approves the changes. Upon approval, the pull request is merged into the deployment-bound branch.
