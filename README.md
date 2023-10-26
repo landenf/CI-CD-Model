@@ -1,5 +1,7 @@
 # Mock CI/CD Pipeline - Proof of Concept
 
+Tables of contents: [Why](#why) | [Microservices](#setup---microservices-involved) | [Step 1](#step-1--code-implementation-and-review------walkthrough) | [Step 2](#step-2--build-and-deploy-staging) | [Step 3](#step-3--stakeholder-approval) | [Step 4](#step-4--production-deployment) | [Diagram](#diagram-of-project-architecture)
+
 ### Project Outline: 
 This project revolves around a Continuous Integration and Continuous Delivery pipeline built using AWS CodePipline and other AWS microservices. The CI/CD pipeline is a proof-of-concept project showcasing the possibility of seamlessly integrating DevOps practices into development teams. This serves to automate the software development lifecycle, encompassing developer implementation, code review (Git), code build, testing, and deployment, and final staging stakeholder approval.
 
@@ -26,10 +28,11 @@ AWS Microservices Used
         - Sub: SES
 - AWS SES
     - Configured to the Stakeholder email list
+
 Note: Repo clone is not necessary. 
 Copy Python scripts into lambda functions and configure microservices and permissions.
 
-## Step 1 – Code Implementation and Review
+## Step 1 – Code Implementation and Review  --  (Walkthrough)
 
 ### Git
 In this phase, a developer codes for a designated task and initiates a pull request. A peer or senior developer reviews and approves the changes. Upon approval, the pull request is merged into the deployment-bound branch.
@@ -59,3 +62,29 @@ The stakeholder will receive an email (using verified SES addresses) including t
 ## Step 4 – Production Deployment
 
 Once all the pipeline steps are complete and the changes are approved by stakeholders this step grabs the same build artifacts from the last deployment and deploys them to the live servers for production. Various deployment strategies such as blue/green, canary, or linear can be configured based on requirements. If the build fails, or the approval is rejected the pipeline is halted until the change is fixed and re-checked into the source control. 
+
+## Diagram of Project Architecture
+
+  - AWS Region 
+
+   ```mermaid
+     graph TD;
+        Developer-->CodeReview;
+        CodeReview-->DevelopmentBoundBrach;
+        DevelopmentBoundBrach-->CodeCommit-Pipeline;
+        CodeCommit-Pipeline-->CodeBuild/Test;
+        CodeBuild/Test-->Fail;
+        Fail-->Developer;
+        CodeBuild/Test-->CodeDeploy-STG;
+        CodeDeploy-STG-->SNS-Topic;
+        SNS-Topic-->Lambda-UrlGenerator;
+        Lambda-UrlGenerator-->DynamoDB;
+        Lambda-UrlGenerator-->SES-Email;
+        SES-Email-->ApprovalUrl;
+        SES-Email-->RejectUrl;
+        ApprovalUrl-->PipelineApproval;
+        RejectUrl-->Developer;
+        PipelineApproval -->Deploy-Prod;
+   ```
+
+       
