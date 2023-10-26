@@ -69,22 +69,8 @@ Once all the pipeline steps are complete and the changes are approved by stakeho
 
    ```mermaid
      graph TD;
-        xx-->dd;
-        dd-->ss;
+        x x-->d d;
+        d d-->s s;
    ```
 
-Developer-->CodeReview(QA);
-        CodeReview(QA)-->MergeintoDDB;
-        MergeintoDDB-->CodeCommit(Pipeline);
-        Code Commit (Pipeline) --> Code Build/Test;
-        Code Build/Test --> Fail;
-        Code Build/Test --> Code Deploy(STG);
-        Code Deploy(STG) --> SNS Topic;
-        SNS Topic --> Lambda (Url Generator);
-        Lambda (Url Generator) --> Dynamo DB;
-        Lambda (Url Generator) --> SES (Email);
-        SES (Email) --> Approval Url;
-        SES (Email) --> Reject Url;
-        Approval Url --> Pipeline Approval;
-        Reject Url --> Developer;
-        Pipeline Approval --> Deploy (Prod);
+       
